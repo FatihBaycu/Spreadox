@@ -23,7 +23,10 @@ jobs:
         run: dotnet test Conq.Noble.Spreadox.sln -c Release --filter Category!=Perf
 
       - name: Pack
-        run: dotnet pack src/Conq.Noble.Spreadox/Conq.Noble.Spreadox.csproj -c Release --no-build -o artifacts
+        run: dotnet pack src/Conq.Noble.Spreadox/Conq.Noble.Spreadox.csproj -c Release -o artifacts
+
+      - name: List Artifacts
+        run: Get-ChildItem artifacts
 
       - name: NuGet Login (OIDC Trusted Publishing)
         id: login
@@ -32,4 +35,8 @@ jobs:
           user: fatihbaycu
 
       - name: Push nuget.org
-        run: dotnet nuget push artifacts/*.nupkg --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: |
+          Get-ChildItem -Path "artifacts" -Filter "*.nupkg" | ForEach-Object {
+            Write-Host "Publishing $($_.FullName)..."
+            dotnet nuget push $_.FullName --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }
