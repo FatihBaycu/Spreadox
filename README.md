@@ -2,6 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Conq.Noble.Spreadox.svg)](https://www.nuget.org/packages/Conq.Noble.Spreadox)
 [![CI](https://github.com/FatihBaycu/Conq.Noble.Spreadox/actions/workflows/ci.yml/badge.svg)](https://github.com/FatihBaycu/Conq.Noble.Spreadox/actions/workflows/ci.yml)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://spreadox-report-mvc.vercel.app/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/FatihBaycu/Conq.Noble.Spreadox/blob/main/LICENSE)
 
 High-level, dependency-isolated C# library for **native Excel (.xlsx) workbooks** and **vector A4 landscape PDF chart reports**.
@@ -14,12 +15,21 @@ High-level, dependency-isolated C# library for **native Excel (.xlsx) workbooks*
 | **Package** | Conq.Noble.Spreadox |
 | **Namespace** | Conq.Noble.Spreadox |
 | **Target** | netstandard2.0 (.NET Framework 4.8+, .NET 6/8/9+) |
+| **Live Web Demo** | [https://spreadox-report-mvc.vercel.app/](https://spreadox-report-mvc.vercel.app/) |
 | **Release Notes** | [CHANGELOG.md](https://github.com/FatihBaycu/Conq.Noble.Spreadox/blob/main/CHANGELOG.md) |
 | **License** | [MIT](https://github.com/FatihBaycu/Conq.Noble.Spreadox/blob/main/LICENSE) |
 
 ---
 
 ## Visual Output Examples
+
+### Interactive Web Studio (ReportBuilderMvc)
+
+Configure series data, chart types, corporate cover page, headers/footers, and export directly to PDF or Excel.
+
+[![Spreadox Report Studio](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/spreadox-report-studio.png)](https://spreadox-report-mvc.vercel.app/)
+
+> 🌐 **Try it live on Vercel:** [https://spreadox-report-mvc.vercel.app/](https://spreadox-report-mvc.vercel.app/)
 
 ### Vector PDF Reports (PdfReport & MVC Studio)
 
@@ -198,7 +208,8 @@ report.Footer.FontFamily = "Roboto";
 
 Explore the `samples/` directory:
 
-1. **samples/ReportBuilderMvc (NEW):**
+1. **samples/ReportBuilderMvc (Live Web Demo):**
+   - 🌐 **Live Demo on Vercel:** [https://spreadox-report-mvc.vercel.app/](https://spreadox-report-mvc.vercel.app/)
    - Full ASP.NET Core MVC Web Studio with **English / Turkish** localization.
    - Dynamic random data generator with customizable series count.
    - Per-series chart type picker (Column, Bar, Line, Area, Pie, Combo, etc.).

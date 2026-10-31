@@ -1,5 +1,11 @@
 # Spreadox Report Studio (MVC Sample)
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://spreadox-report-mvc.vercel.app/)
+
+> 🌐 **Canlı Demo (Live Web App):** [https://spreadox-report-mvc.vercel.app/](https://spreadox-report-mvc.vercel.app/)
+
+![Spreadox Report Studio](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/spreadox-report-studio.png)
+
 Bu proje, **Spreadox** kütüphanesini kullanarak dinamik veri üretimi, interaktif grafik tipi yapılandırması, Excel ve PDF rapor oluşturma, üstbilgi/altbilgi (Header/Footer) özelleştirme, çoklu dil desteği (English / Türkçe) ve özel font desteği sunan bir ASP.NET Core MVC örnek uygulamasıdır.
 
 ## Özellikler

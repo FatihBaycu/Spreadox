@@ -16,3 +16,4 @@ perf-out.txt
 # macOS & Temporary local files
 .DS_Store
 Library/
+.vercel

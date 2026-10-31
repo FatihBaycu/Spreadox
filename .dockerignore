@@ -1,0 +1,11 @@
+**/.git
+**/.vs
+**/bin
+**/obj
+**/.DS_Store
+**/artifacts
+tests/
+SpreadoxSamples/
+samples/FullDemo*
+samples/PdfReportSample*
+samples/MeasurementChartSample*
