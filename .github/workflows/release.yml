@@ -5,6 +5,10 @@ on:
     tags:
       - "v*.*.*"
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   nuget:
     runs-on: windows-latest
@@ -21,9 +25,11 @@ jobs:
       - name: Pack
         run: dotnet pack src/Conq.Noble.Spreadox/Conq.Noble.Spreadox.csproj -c Release --no-build -o artifacts
 
+      - name: NuGet Login (OIDC Trusted Publishing)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: fatihbaycu
+
       - name: Push nuget.org
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: |
-          if (-not $env:NUGET_API_KEY) { throw "Set the NUGET_API_KEY repository secret." }
-          dotnet nuget push artifacts/*.nupkg --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push artifacts/*.nupkg --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate

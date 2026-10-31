@@ -92,7 +92,7 @@ namespace Conq.Noble.Spreadox
                 return;
             }
 
-            formula = formula.Trim();
+            formula = formula!.Trim();
             if (formula.StartsWith("=", StringComparison.Ordinal))
             {
                 formula = formula.Substring(1);
@@ -211,17 +211,27 @@ namespace Conq.Noble.Spreadox
 
         public int? GetInt() =>
             _kind == CellValueKind.Integer ? (int?)_value
+            : _kind == CellValueKind.Double && _value is double d && d == Math.Truncate(d) && d >= int.MinValue && d <= int.MaxValue ? (int)d
             : _kind == CellValueKind.Formula && _value is int i ? i
+            : _kind == CellValueKind.Formula && _value is double fd && fd == Math.Truncate(fd) && fd >= int.MinValue && fd <= int.MaxValue ? (int)fd
             : null;
 
         public double? GetDouble() =>
             _kind == CellValueKind.Double ? (double?)_value
+            : _kind == CellValueKind.Integer && _value is int i ? (double)i
+            : _kind == CellValueKind.Decimal && _value is decimal m ? (double)m
             : _kind == CellValueKind.Formula && _value is double d ? d
+            : _kind == CellValueKind.Formula && _value is int fi ? (double)fi
+            : _kind == CellValueKind.Formula && _value is decimal fm ? (double)fm
             : null;
 
         public decimal? GetDecimal() =>
             _kind == CellValueKind.Decimal ? (decimal?)_value
+            : _kind == CellValueKind.Double && _value is double d ? (decimal)d
+            : _kind == CellValueKind.Integer && _value is int i ? (decimal)i
             : _kind == CellValueKind.Formula && _value is decimal m ? m
+            : _kind == CellValueKind.Formula && _value is double fd ? (decimal)fd
+            : _kind == CellValueKind.Formula && _value is int fi ? (decimal)fi
             : null;
 
         public bool? GetBoolean() =>

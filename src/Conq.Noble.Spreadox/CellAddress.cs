@@ -41,6 +41,11 @@ namespace Conq.Noble.Spreadox
                 throw new ArgumentException($"Invalid cell address '{a1}'.", nameof(a1));
             }
 
+            if (r > MaxRows || col > MaxColumns)
+            {
+                throw new ArgumentException($"Cell address '{a1}' exceeds sheet bounds (MaxRows={MaxRows}, MaxColumns={MaxColumns}).", nameof(a1));
+            }
+
             row = r;
             column = col;
         }

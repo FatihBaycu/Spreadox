@@ -20,6 +20,7 @@ namespace Conq.Noble.Spreadox.Internal
         private readonly StyleIndexCache _styleCache = new StyleIndexCache();
         private readonly SharedStringTableBuilder? _sst;
         private readonly ExcelStreamingOptions _options;
+        private readonly HashSet<string> _sheetNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private ExcelStreamingWorksheet? _openSheet;
         private StreamingSheetWriter? _openSheetWriter;
         private uint _nextSheetId = 1;
@@ -62,6 +63,11 @@ namespace Conq.Noble.Spreadox.Internal
             EnsureCurrentSheetClosed();
 
             string trimmed = ValidateSheetName(name);
+            if (!_sheetNames.Add(trimmed))
+            {
+                throw new InvalidOperationException($"A worksheet named '{trimmed}' already exists.");
+            }
+
             WorksheetPart worksheetPart = _workbookPart.AddNewPart<WorksheetPart>();
             string relId = _workbookPart.GetIdOfPart(worksheetPart);
 
@@ -144,6 +150,16 @@ namespace Conq.Noble.Spreadox.Internal
                 throw new ArgumentException("Worksheet name cannot exceed 31 characters.", nameof(name));
             }
 
+            if (trimmed.IndexOfAny(new[] { '\\', '/', '?', '*', '[', ']', ':' }) >= 0)
+            {
+                throw new ArgumentException("Worksheet name contains invalid characters.", nameof(name));
+            }
+
+            if (trimmed.StartsWith("'", StringComparison.Ordinal) || trimmed.EndsWith("'", StringComparison.Ordinal))
+            {
+                throw new ArgumentException("Worksheet name cannot start or end with an apostrophe.", nameof(name));
+            }
+
             return trimmed;
         }
 
@@ -157,7 +173,7 @@ namespace Conq.Noble.Spreadox.Internal
 
             foreach (string value in sst.Values)
             {
-                table.AppendChild(new SharedStringItem(new Text(value)));
+                table.AppendChild(new SharedStringItem(new Text(OpenXmlWorkbookWriter.SanitizeXmlString(value))));
             }
 
             return table;
@@ -247,7 +263,7 @@ namespace Conq.Noble.Spreadox.Internal
                 ApplyStyle(cell, styleIndex);
                 _writer!.WriteStartElement(cell);
                 _writer.WriteStartElement(new InlineString());
-                _writer.WriteElement(new Text(value));
+                _writer.WriteElement(new Text(OpenXmlWorkbookWriter.SanitizeXmlString(value)));
                 _writer.WriteEndElement(); // InlineString
                 _writer.WriteEndElement(); // Cell
             }

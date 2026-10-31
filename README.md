@@ -16,6 +16,7 @@ High-level, dependency-isolated C# library for **native Excel (.xlsx) workbooks*
 | **Namespace** | Conq.Noble.Spreadox |
 | **Target** | netstandard2.0 (.NET Framework 4.8+, .NET 6/8/9+) |
 | **Live Web Demo** | [https://spreadox-report-mvc.vercel.app/](https://spreadox-report-mvc.vercel.app/) |
+| **QA & Benchmarks** | [docs/TEST_RESULTS.md](docs/TEST_RESULTS.md) (156 tests, 1M rows in 22s) |
 | **Release Notes** | [CHANGELOG.md](https://github.com/FatihBaycu/Conq.Noble.Spreadox/blob/main/CHANGELOG.md) |
 | **License** | [MIT](https://github.com/FatihBaycu/Conq.Noble.Spreadox/blob/main/LICENSE) |
 
@@ -201,6 +202,20 @@ report.Footer.FontFamily = "Roboto";
 | **Charts / Pictures / Conditional Format** | Full support | Not supported (raw data only) |
 | **Large Exports** | Recommended up to tens of thousands of rows | Ideal for 100,000+ to millions of rows |
 | **Strings Storage** | Shared string table | inlineStr (default) or SST |
+
+---
+
+## Performance Benchmarks & Quality Assurance
+
+Spreadox is verified with an automated suite of **112 tests** across 7 quality categories (Memory, Concurrency, OpenXml Validation, Vector PDF, Charts, Boundaries, and NuGet Integrity):
+
+- **1,000,000 Rows Export:** **22.1 seconds** (40 MB file, 667 MB peak working set).
+- **100,000 Rows Export:** **2.1 seconds** (3.9 MB file, 321 MB peak working set).
+- **Concurrency Isolation:** Verified across 1, 5, 10, 25, 50, and 100 simultaneous independent workbook exports.
+- **OpenXML Schema Compliance:** 100% clean validation via `DocumentFormat.OpenXml.Validation.OpenXmlValidator` (0 errors).
+- **Memory Leak Protection:** Verified zero memory leaks across repeated batch export cycles.
+
+👉 **Full benchmark metrics, memory profiles, and compatibility tables:** [docs/TEST_RESULTS.md](docs/TEST_RESULTS.md)
 
 ---
 

@@ -12,12 +12,14 @@ namespace Conq.Noble.Spreadox
     {
         private readonly StreamingPackageWriter _package;
         private readonly StreamingSheetWriter _sheet;
+        private readonly ExcelStreamingRowWriter _rowWriter;
         private bool _completed;
 
         internal ExcelStreamingWorksheet(StreamingPackageWriter package, StreamingSheetWriter sheet)
         {
             _package = package;
             _sheet = sheet;
+            _rowWriter = new ExcelStreamingRowWriter(package, sheet, 0);
         }
 
         public string Name => _sheet.Name;
@@ -63,9 +65,9 @@ namespace Conq.Noble.Spreadox
 
             if (writeCells is null) throw new ArgumentNullException(nameof(writeCells));
 
-            var rowWriter = new ExcelStreamingRowWriter(_package, _sheet, rowIndex);
+            _rowWriter.Reset(rowIndex);
             _sheet.BeginRow(rowIndex);
-            writeCells(rowWriter);
+            writeCells(_rowWriter);
             _sheet.EndRow();
         }
 
@@ -91,12 +93,17 @@ namespace Conq.Noble.Spreadox
     {
         private readonly StreamingPackageWriter _package;
         private readonly StreamingSheetWriter _sheet;
-        private readonly int _rowIndex;
+        private int _rowIndex;
 
         internal ExcelStreamingRowWriter(StreamingPackageWriter package, StreamingSheetWriter sheet, int rowIndex)
         {
             _package = package;
             _sheet = sheet;
+            _rowIndex = rowIndex;
+        }
+
+        internal void Reset(int rowIndex)
+        {
             _rowIndex = rowIndex;
         }
 

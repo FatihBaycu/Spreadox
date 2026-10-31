@@ -492,10 +492,46 @@ namespace Conq.Noble.Spreadox.Internal
 
             foreach (string value in sst.Values)
             {
-                table.AppendChild(new SharedStringItem(new Text(value)));
+                table.AppendChild(new SharedStringItem(new Text(SanitizeXmlString(value))));
             }
 
             return table;
+        }
+
+        internal static string SanitizeXmlString(string? text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return string.Empty;
+            }
+
+            bool hasInvalid = false;
+            for (int i = 0; i < text.Length; i++)
+            {
+                char ch = text[i];
+                if (ch < 0x20 && ch != '\t' && ch != '\n' && ch != '\r')
+                {
+                    hasInvalid = true;
+                    break;
+                }
+            }
+
+            if (!hasInvalid)
+            {
+                return text;
+            }
+
+            var sb = new System.Text.StringBuilder(text.Length);
+            for (int i = 0; i < text.Length; i++)
+            {
+                char ch = text[i];
+                if (ch >= 0x20 || ch == '\t' || ch == '\n' || ch == '\r')
+                {
+                    sb.Append(ch);
+                }
+            }
+
+            return sb.ToString();
         }
 
         internal static double ToExcelSerialDate(DateTime value) => value.ToOADate();

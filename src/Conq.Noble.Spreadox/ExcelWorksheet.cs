@@ -438,6 +438,11 @@ namespace Conq.Noble.Spreadox
                 throw new ArgumentException("Worksheet name contains invalid characters.", nameof(name));
             }
 
+            if (name.StartsWith("'", StringComparison.Ordinal) || name.EndsWith("'", StringComparison.Ordinal))
+            {
+                throw new ArgumentException("Worksheet name cannot start or end with an apostrophe.", nameof(name));
+            }
+
             return name;
         }
     }

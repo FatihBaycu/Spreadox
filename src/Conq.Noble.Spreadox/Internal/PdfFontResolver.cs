@@ -157,22 +157,28 @@ namespace Conq.Noble.Spreadox.Internal
             return LoadEmbedded(resource);
         }
 
+        private static readonly ConcurrentDictionary<string, byte[]> EmbeddedFontCache =
+            new ConcurrentDictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
+
         private static byte[] LoadEmbedded(string fileName)
         {
-            Assembly assembly = typeof(PdfFontResolver).Assembly;
-            string resourceName = "Conq.Noble.Spreadox.Fonts." + fileName;
-            Stream? stream = assembly.GetManifestResourceStream(resourceName);
-            if (stream is null)
+            return EmbeddedFontCache.GetOrAdd(fileName, name =>
             {
-                throw new InvalidOperationException("Embedded font not found: " + resourceName);
-            }
+                Assembly assembly = typeof(PdfFontResolver).Assembly;
+                string resourceName = "Conq.Noble.Spreadox.Fonts." + name;
+                Stream? stream = assembly.GetManifestResourceStream(resourceName);
+                if (stream is null)
+                {
+                    throw new InvalidOperationException("Embedded font not found: " + resourceName);
+                }
 
-            using (stream)
-            using (var copy = new MemoryStream())
-            {
-                stream.CopyTo(copy);
-                return copy.ToArray();
-            }
+                using (stream)
+                using (var copy = new MemoryStream())
+                {
+                    stream.CopyTo(copy);
+                    return copy.ToArray();
+                }
+            });
         }
     }
 }
