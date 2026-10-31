@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = Loc["AppTitle"];
     var availableFonts = ViewBag.AvailableFonts as List<string> ?? new List<string> { "Liberation Sans" };
+    bool isFontUploadEnabled = ViewBag.IsFontUploadEnabled is true;
 }
 
 <form id="reportForm" asp-action="Export" method="post" enctype="multipart/form-data">
@@ -86,6 +87,10 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="font-tab" data-bs-toggle="pill" data-bs-target="#font-pane" type="button" role="tab">
                 <i class="bi bi-fonts me-1"></i> @Loc["TabFonts"]
+                @if (isFontUploadEnabled)
+                {
+                    <span class="badge bg-warning text-dark ms-1" style="font-size: 0.65rem;">Debug</span>
+                }
             </button>
         </li>
     </ul>
@@ -314,34 +319,53 @@
         <!-- ======================= TAB 5: FONT REGISTRY ======================= -->
         <div class="tab-pane fade" id="font-pane" role="tabpanel">
             <div class="card shadow-sm border-0">
-                <div class="card-header bg-white py-3">
-                    <h5 class="mb-0 fw-bold text-dark">
-                        <i class="bi bi-fonts text-primary me-2"></i>@Loc["FontRegistryTitle"]
-                    </h5>
-                    <small class="text-muted">@Loc["FontRegistryDesc"]</small>
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 fw-bold text-dark">
+                            <i class="bi bi-fonts text-primary me-2"></i>@Loc["FontRegistryTitle"]
+                        </h5>
+                        <small class="text-muted">@Loc["FontRegistryDesc"]</small>
+                    </div>
+                    @if (isFontUploadEnabled)
+                    {
+                        <span class="badge bg-warning text-dark"><i class="bi bi-bug me-1"></i>@Loc["DebugOnlyBadge"]</span>
+                    }
                 </div>
                 <div class="card-body p-4">
-                    <div class="row g-3">
-                        <div class="col-md-5">
-                            <label class="form-label fw-semibold">@Loc["FontFamilyName"]</label>
-                            <input type="text" id="fontFamilyNameInput" class="form-control" placeholder="@Loc["FontFamilyNamePlaceholder"]" />
+                    @if (isFontUploadEnabled)
+                    {
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <label class="form-label fw-semibold">@Loc["FontFamilyName"]</label>
+                                <input type="text" id="fontFamilyNameInput" class="form-control" placeholder="@Loc["FontFamilyNamePlaceholder"]" />
+                            </div>
+
+                            <div class="col-md-5">
+                                <label class="form-label fw-semibold">@Loc["FontFileLabel"]</label>
+                                <input type="file" id="fontFileInput" class="form-control" accept=".ttf" />
+                            </div>
+
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" id="btnUploadFont" class="btn btn-primary w-100">
+                                    <i class="bi bi-cloud-arrow-up-fill me-1"></i> @Loc["UploadFontButton"]
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="col-md-5">
-                            <label class="form-label fw-semibold">@Loc["FontFileLabel"]</label>
-                            <input type="file" id="fontFileInput" class="form-control" accept=".ttf" />
+                        <div id="fontUploadAlert" class="mt-3 d-none alert alert-info"></div>
+
+                        <hr class="my-4" />
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary d-flex align-items-center mb-4" role="alert">
+                            <i class="bi bi-shield-lock-fill text-secondary fs-4 me-3"></i>
+                            <div>
+                                <strong>@Loc["FontUploadDisabledTitle"]</strong><br />
+                                <small class="text-muted">@Loc["FontUploadDisabledNotice"]</small>
+                            </div>
                         </div>
-
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="button" id="btnUploadFont" class="btn btn-primary w-100">
-                                <i class="bi bi-cloud-arrow-up-fill me-1"></i> @Loc["UploadFontButton"]
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="fontUploadAlert" class="mt-3 d-none alert alert-info"></div>
-
-                    <hr class="my-4" />
+                    }
 
                     <h6 class="fw-bold text-secondary mb-2">@Loc["InstalledFonts"]</h6>
                     <ul id="registeredFontsList" class="list-group list-group-flush border rounded-3">
@@ -574,70 +598,73 @@
         }
 
         // Upload custom font
-        document.getElementById("btnUploadFont").addEventListener("click", async function () {
-            const fileInput = document.getElementById("fontFileInput");
-            const nameInput = document.getElementById("fontFamilyNameInput");
-            const alertBox = document.getElementById("fontUploadAlert");
+        const btnUpload = document.getElementById("btnUploadFont");
+        if (btnUpload) {
+            btnUpload.addEventListener("click", async function () {
+                const fileInput = document.getElementById("fontFileInput");
+                const nameInput = document.getElementById("fontFamilyNameInput");
+                const alertBox = document.getElementById("fontUploadAlert");
 
-            if (!fileInput.files || fileInput.files.length === 0) {
-                alertBox.className = "mt-3 alert alert-warning";
-                alertBox.textContent = "@Loc["SelectFontAlert"]";
-                alertBox.classList.remove("d-none");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("fontFile", fileInput.files[0]);
-            formData.append("fontName", nameInput.value.trim());
-
-            const btn = this;
-            btn.disabled = true;
-            btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> ${txtUploading}`;
-
-            try {
-                const response = await fetch("/Home/UploadFont", {
-                    method: "POST",
-                    body: formData
-                });
-                const result = await response.json();
-
-                if (result.success) {
-                    alertBox.className = "mt-3 alert alert-success";
-                    alertBox.textContent = result.message;
+                if (!fileInput.files || fileInput.files.length === 0) {
+                    alertBox.className = "mt-3 alert alert-warning";
+                    alertBox.textContent = "@Loc["SelectFontAlert"]";
                     alertBox.classList.remove("d-none");
-
-                    // Add to dropdowns
-                    const fontSelects = document.querySelectorAll(".font-select-list");
-                    fontSelects.forEach(select => {
-                        const opt = document.createElement("option");
-                        opt.value = result.familyName;
-                        opt.textContent = result.familyName;
-                        select.appendChild(opt);
-                    });
-
-                    // Add to list
-                    const list = document.getElementById("registeredFontsList");
-                    const li = document.createElement("li");
-                    li.className = "list-group-item d-flex justify-content-between align-items-center";
-                    li.innerHTML = `<span><i class="bi bi-check2-circle text-success me-2"></i><strong>${result.familyName}</strong></span> <span class="badge bg-success">${txtNewlyAdded}</span>`;
-                    list.appendChild(li);
-
-                    fileInput.value = "";
-                    nameInput.value = "";
-                } else {
-                    alertBox.className = "mt-3 alert alert-danger";
-                    alertBox.textContent = result.message;
-                    alertBox.classList.remove("d-none");
+                    return;
                 }
-            } catch (err) {
-                alertBox.className = "mt-3 alert alert-danger";
-                alertBox.textContent = err.message;
-                alertBox.classList.remove("d-none");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="bi bi-cloud-arrow-up-fill me-1"></i> ${txtUpload}`;
-            }
-        });
+
+                const formData = new FormData();
+                formData.append("fontFile", fileInput.files[0]);
+                formData.append("fontName", nameInput.value.trim());
+
+                const btn = this;
+                btn.disabled = true;
+                btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> ${txtUploading}`;
+
+                try {
+                    const response = await fetch("/Home/UploadFont", {
+                        method: "POST",
+                        body: formData
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alertBox.className = "mt-3 alert alert-success";
+                        alertBox.textContent = result.message;
+                        alertBox.classList.remove("d-none");
+
+                        // Add to dropdowns
+                        const fontSelects = document.querySelectorAll(".font-select-list");
+                        fontSelects.forEach(select => {
+                            const opt = document.createElement("option");
+                            opt.value = result.familyName;
+                            opt.textContent = result.familyName;
+                            select.appendChild(opt);
+                        });
+
+                        // Add to list
+                        const list = document.getElementById("registeredFontsList");
+                        const li = document.createElement("li");
+                        li.className = "list-group-item d-flex justify-content-between align-items-center";
+                        li.innerHTML = `<span><i class="bi bi-check2-circle text-success me-2"></i><strong>${result.familyName}</strong></span> <span class="badge bg-success">${txtNewlyAdded}</span>`;
+                        list.appendChild(li);
+
+                        fileInput.value = "";
+                        nameInput.value = "";
+                    } else {
+                        alertBox.className = "mt-3 alert alert-danger";
+                        alertBox.textContent = result.message;
+                        alertBox.classList.remove("d-none");
+                    }
+                } catch (err) {
+                    alertBox.className = "mt-3 alert alert-danger";
+                    alertBox.textContent = err.message;
+                    alertBox.classList.remove("d-none");
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="bi bi-cloud-arrow-up-fill me-1"></i> ${txtUpload}`;
+                }
+            });
+        }
     });
 </script>
 }

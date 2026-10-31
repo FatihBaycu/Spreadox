@@ -16,6 +16,13 @@ public class HomeController : Controller
     // Track loaded fonts for UI selection
     private static readonly List<string> AvailableFonts = new() { "Liberation Sans" };
 
+    public static bool IsFontUploadAllowed =>
+#if DEBUG
+        true;
+#else
+        false;
+#endif
+
     public HomeController(ReportGeneratorService reportService, ILocalizationService loc, IWebHostEnvironment env)
     {
         _reportService = reportService;
@@ -56,6 +63,7 @@ public class HomeController : Controller
 
         model.Items = _reportService.GenerateRandomData(model.DataSeriesCount);
         ViewBag.AvailableFonts = AvailableFonts;
+        ViewBag.IsFontUploadEnabled = IsFontUploadAllowed;
         return View(model);
     }
 
@@ -85,11 +93,19 @@ public class HomeController : Controller
     }
 
     [HttpPost]
+#if DEBUG
     public async Task<IActionResult> UploadFont(IFormFile? fontFile, string? fontName)
     {
         if (fontFile == null || fontFile.Length == 0)
         {
             return Json(new { success = false, message = _loc["SelectFontAlert"] });
+        }
+
+        // Limit font file size (max 5 MB)
+        const long maxSizeBytes = 5 * 1024 * 1024;
+        if (fontFile.Length > maxSizeBytes)
+        {
+            return Json(new { success = false, message = _loc["FileSizeExceeded", 5] });
         }
 
         if (!fontFile.FileName.EndsWith(".ttf", StringComparison.OrdinalIgnoreCase))
@@ -101,9 +117,26 @@ public class HomeController : Controller
             ? Path.GetFileNameWithoutExtension(fontFile.FileName)
             : fontName.Trim();
 
+        // Sanitize family name to safe characters
+        if (familyName.Length > 50 || familyName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+        {
+            familyName = new string(familyName.Where(c => char.IsLetterOrDigit(c) || c == ' ' || c == '-' || c == '_').Take(50).ToArray()).Trim();
+        }
+
+        if (string.IsNullOrWhiteSpace(familyName))
+        {
+            familyName = "CustomFont";
+        }
+
         using var memoryStream = new MemoryStream();
         await fontFile.CopyToAsync(memoryStream);
         byte[] fontBytes = memoryStream.ToArray();
+
+        // Validate TTF magic bytes
+        if (!IsValidFontHeader(fontBytes))
+        {
+            return Json(new { success = false, message = _loc["InvalidFontFile"] });
+        }
 
         try
         {
@@ -125,14 +158,35 @@ public class HomeController : Controller
         }
     }
 
+    private static bool IsValidFontHeader(byte[] bytes)
+    {
+        if (bytes == null || bytes.Length < 4) return false;
+        // Standard TrueType: 00 01 00 00
+        if (bytes[0] == 0x00 && bytes[1] == 0x01 && bytes[2] == 0x00 && bytes[3] == 0x00) return true;
+        // 'true': 74 72 75 65
+        if (bytes[0] == 0x74 && bytes[1] == 0x72 && bytes[2] == 0x75 && bytes[3] == 0x65) return true;
+        // 'OTTO': 4F 54 54 4F
+        if (bytes[0] == 0x4F && bytes[1] == 0x54 && bytes[2] == 0x54 && bytes[3] == 0x4F) return true;
+        // 'typ1': 74 79 70 31
+        if (bytes[0] == 0x74 && bytes[1] == 0x79 && bytes[2] == 0x70 && bytes[3] == 0x31) return true;
+        return false;
+    }
+#else
+    public IActionResult UploadFont(IFormFile? fontFile, string? fontName)
+    {
+        return StatusCode(StatusCodes.Status403Forbidden, new { success = false, message = _loc["FontUploadDisabledAlert"] });
+    }
+#endif
+
     [HttpPost]
     public async Task<IActionResult> Export(
         [FromForm] ReportConfigViewModel model,
         IFormFile? headerLogo,
         IFormFile? footerLogo)
     {
+        const long maxLogoSizeBytes = 2 * 1024 * 1024; // 2 MB limit for logos
         byte[]? headerLogoBytes = null;
-        if (headerLogo != null && headerLogo.Length > 0)
+        if (headerLogo != null && headerLogo.Length > 0 && headerLogo.Length <= maxLogoSizeBytes)
         {
             using var ms = new MemoryStream();
             await headerLogo.CopyToAsync(ms);
@@ -140,7 +194,7 @@ public class HomeController : Controller
         }
 
         byte[]? footerLogoBytes = null;
-        if (footerLogo != null && footerLogo.Length > 0)
+        if (footerLogo != null && footerLogo.Length > 0 && footerLogo.Length <= maxLogoSizeBytes)
         {
             using var ms = new MemoryStream();
             await footerLogo.CopyToAsync(ms);

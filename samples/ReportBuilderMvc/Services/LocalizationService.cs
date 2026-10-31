@@ -183,6 +183,12 @@ public sealed class LocalizationService : ILocalizationService
         ["InstalledFonts"] = new() { ["en"] = "Registered System Fonts", ["tr"] = "Sistemde Yüklü Fontlar" },
         ["ActiveBadge"] = new() { ["en"] = "Active", ["tr"] = "Aktif" },
         ["NewlyAddedBadge"] = new() { ["en"] = "Newly Registered", ["tr"] = "Yeni Eklendi" },
+        ["DebugOnlyBadge"] = new() { ["en"] = "Debug Only", ["tr"] = "Sadece Debug" },
+        ["FontUploadDisabledTitle"] = new() { ["en"] = "Font Upload Disabled (Production Mode)", ["tr"] = "Font Yükleme Devre Dışı (Canlı Ortam)" },
+        ["FontUploadDisabledNotice"] = new() { ["en"] = "For security reasons, dynamic font uploads are disabled in production mode. Custom font registration is only available during local debugging.", ["tr"] = "Güvenlik gerekçesiyle canlı (production) ortamda font yükleme devre dışıdır. Özel font yükleme özelliği yalnızca yerel debug modunda kullanılabilir." },
+        ["FontUploadDisabledAlert"] = new() { ["en"] = "Font upload is disabled in production.", ["tr"] = "Canlı ortamda font yüklemeye izin verilmemektedir." },
+        ["FileSizeExceeded"] = new() { ["en"] = "Font file size must be less than {0} MB.", ["tr"] = "Font dosyası boyutu {0} MB'dan küçük olmalıdır." },
+        ["InvalidFontFile"] = new() { ["en"] = "The file does not appear to be a valid TrueType (.ttf) font.", ["tr"] = "Dosya geçerli bir TrueType (.ttf) fontu gibi görünmüyor." },
 
         // Dynamic JS templates
         ["NewSeriesDefaultTitle"] = new() { ["en"] = "New Series", ["tr"] = "Yeni Başlık" },
