@@ -1,6 +1,6 @@
 # Spreadox
 
-[![NuGet](https://img.shields.io/nuget/v/Conq.Noble.Spreadox.svg)](https://www.nuget.org/packages/Conq.Noble.Spreadox)
+[![NuGet](https://img.shields.io/nuget/v/Spreadox.svg)](https://www.nuget.org/packages/Spreadox)
 [![CI](https://github.com/FatihBaycu/Spreadox/actions/workflows/ci.yml/badge.svg)](https://github.com/FatihBaycu/Spreadox/actions/workflows/ci.yml)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://spreadox-report-mvc.vercel.app/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/FatihBaycu/Spreadox/blob/main/LICENSE)
@@ -12,7 +12,7 @@ High-level, dependency-isolated C# library for **native Excel (.xlsx) workbooks*
 
 | | |
 |---|---|
-| **Package** | Conq.Noble.Spreadox |
+| **Package** | [Spreadox](https://www.nuget.org/packages/Spreadox) |
 | **Namespace** | Conq.Noble.Spreadox |
 | **Target** | netstandard2.0 (.NET Framework 4.8+, .NET 6/8/9+) |
 | **Live Web Demo** | [https://spreadox-report-mvc.vercel.app/](https://spreadox-report-mvc.vercel.app/) |
@@ -61,12 +61,12 @@ Standard OOXML DrawingML charts linked to spreadsheet cell ranges with native fo
 ## Install via NuGet
 
 ```bash
-dotnet add package Conq.Noble.Spreadox
+dotnet add package Spreadox
 ```
 
 Package Manager:
 ```powershell
-Install-Package Conq.Noble.Spreadox
+Install-Package Spreadox
 ```
 
 ---
@@ -252,14 +252,14 @@ dotnet pack src/Conq.Noble.Spreadox/Conq.Noble.Spreadox.csproj -c Release -o art
 ```
 
 This generates:
-- `artifacts/Conq.Noble.Spreadox.0.9.0.nupkg`
-- `artifacts/Conq.Noble.Spreadox.0.9.0.snupkg` (Symbols package)
+- `artifacts/Spreadox.1.0.0.nupkg`
+- `artifacts/Spreadox.1.0.0.snupkg` (Symbols package)
 
 ### Publishing to NuGet.org:
 
 Using the .NET CLI:
 ```bash
-dotnet nuget push artifacts/Conq.Noble.Spreadox.0.9.0.nupkg --api-key <YOUR_NUGET_API_KEY> --source https://api.nuget.org/v3/index.json
+dotnet nuget push artifacts/Spreadox.1.0.0.nupkg --api-key <YOUR_NUGET_API_KEY> --source https://api.nuget.org/v3/index.json
 ```
 
 Or via GitHub Actions:

@@ -1,8 +1,8 @@
 # Spreadox — Test Execution & Benchmark Results
 
 **Date:** 2026-11-01  
-**Project:** [Conq.Noble.Spreadox](https://github.com/FatihBaycu/Spreadox)  
-**Package Version:** `0.9.2`  
+**Project:** [Spreadox](https://github.com/FatihBaycu/Spreadox)  
+**Package Version:** `1.0.0`  
 **Core Library Target:** .NET Standard 2.0 (`netstandard2.0`)  
 **Test Suite Target:** .NET 8.0 (`net8.0`)  
 **Environment:** macOS ARM64 (Apple M-series), .NET SDK 8.0.15  

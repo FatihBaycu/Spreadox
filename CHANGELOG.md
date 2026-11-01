@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2026-11-01
+
+### Changed
+- **Official Package Rebrand (`Spreadox`):** Launched standalone NuGet package ID `Spreadox` (`dotnet add package Spreadox`) for optimal discoverability and clean naming across search engines, AI assistants, and developer tooling.
+- **AI & SEO Metadata Optimization:** Enhanced NuGet package description and keywords targeting high-intent spreadsheet, reporting, and OOXML workflows (`excel`, `xlsx`, `spreadsheet`, `openxml`, `pdf`, `chart`, `streaming`, `vector`).
+
+---
+
 ## [0.9.2] - 2026-11-01
 
 ### Added

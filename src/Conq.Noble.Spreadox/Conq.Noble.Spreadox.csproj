@@ -10,10 +10,10 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
 
     <IsPackable>true</IsPackable>
-    <PackageId>Conq.Noble.Spreadox</PackageId>
+    <PackageId>Spreadox</PackageId>
     <Title>Spreadox</Title>
-    <Description>Spreadox is a high-level C# library for Excel (.xlsx) workbooks and A4 PDF chart reports. OpenXml types stay internal. PDF uses in-memory series (not OOXML charts).</Description>
-    <PackageTags>spreadox;spreadsheet;xlsx;excel;openxml;chart;streaming;ooxml;pdf</PackageTags>
+    <Description>Spreadox is a high-performance, dependency-isolated C# library for native Excel (.xlsx) workbooks and vector A4 landscape PDF chart reports. Features memory-efficient SAX streaming for millions of rows and native OpenXML DrawingML charts.</Description>
+    <PackageTags>spreadox;excel;xlsx;spreadsheet;openxml;pdf;report;chart;charts;streaming;ooxml;vector;csharp;dotnet</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>https://github.com/FatihBaycu/Spreadox/releases</PackageReleaseNotes>
   </PropertyGroup>
