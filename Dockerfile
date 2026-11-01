@@ -4,7 +4,6 @@ WORKDIR /source
 
 # Copy Directory.Build.props and project files for caching restore layer
 COPY ["Directory.Build.props", "./"]
-COPY ["src/Conq.Noble.Spreadox/Conq.Noble.Spreadox.csproj", "src/Conq.Noble.Spreadox/"]
 COPY ["samples/ReportBuilderMvc/ReportBuilderMvc.csproj", "samples/ReportBuilderMvc/"]
 RUN dotnet restore "samples/ReportBuilderMvc/ReportBuilderMvc.csproj"
 

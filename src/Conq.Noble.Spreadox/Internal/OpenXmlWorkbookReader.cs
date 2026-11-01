@@ -21,7 +21,7 @@ namespace Conq.Noble.Spreadox.Internal
                 WorkbookPart? workbookPart = document.WorkbookPart;
                 if (workbookPart?.Workbook?.Sheets is null)
                 {
-                    return;
+                    throw new InvalidDataException("The package does not contain a valid Excel workbook or worksheets.");
                 }
 
                 IList<string> sharedStrings = LoadSharedStrings(workbookPart);

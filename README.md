@@ -1,9 +1,9 @@
 # Spreadox
 
 [![NuGet](https://img.shields.io/nuget/v/Conq.Noble.Spreadox.svg)](https://www.nuget.org/packages/Conq.Noble.Spreadox)
-[![CI](https://github.com/FatihBaycu/Conq.Noble.Spreadox/actions/workflows/ci.yml/badge.svg)](https://github.com/FatihBaycu/Conq.Noble.Spreadox/actions/workflows/ci.yml)
+[![CI](https://github.com/FatihBaycu/Spreadox/actions/workflows/ci.yml/badge.svg)](https://github.com/FatihBaycu/Spreadox/actions/workflows/ci.yml)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://spreadox-report-mvc.vercel.app/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/FatihBaycu/Conq.Noble.Spreadox/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/FatihBaycu/Spreadox/blob/main/LICENSE)
 
 High-level, dependency-isolated C# library for **native Excel (.xlsx) workbooks** and **vector A4 landscape PDF chart reports**.
 
@@ -16,9 +16,9 @@ High-level, dependency-isolated C# library for **native Excel (.xlsx) workbooks*
 | **Namespace** | Conq.Noble.Spreadox |
 | **Target** | netstandard2.0 (.NET Framework 4.8+, .NET 6/8/9+) |
 | **Live Web Demo** | [https://spreadox-report-mvc.vercel.app/](https://spreadox-report-mvc.vercel.app/) |
-| **QA & Benchmarks** | [docs/TEST_RESULTS.md](docs/TEST_RESULTS.md) (156 tests, 1M rows in 22s) |
-| **Release Notes** | [CHANGELOG.md](https://github.com/FatihBaycu/Conq.Noble.Spreadox/blob/main/CHANGELOG.md) |
-| **License** | [MIT](https://github.com/FatihBaycu/Conq.Noble.Spreadox/blob/main/LICENSE) |
+| **QA & Benchmarks** | [docs/TEST_RESULTS.md](docs/TEST_RESULTS.md) (185 tests, 1M rows in 22s) |
+| **Release Notes** | [CHANGELOG.md](https://github.com/FatihBaycu/Spreadox/blob/main/CHANGELOG.md) |
+| **License** | [MIT](https://github.com/FatihBaycu/Spreadox/blob/main/LICENSE) |
 
 ---
 
@@ -28,7 +28,7 @@ High-level, dependency-isolated C# library for **native Excel (.xlsx) workbooks*
 
 Configure series data, chart types, corporate cover page, headers/footers, and export directly to PDF or Excel.
 
-[![Spreadox Report Studio](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/spreadox-report-studio.png)](https://spreadox-report-mvc.vercel.app/)
+[![Spreadox Report Studio](https://raw.githubusercontent.com/FatihBaycu/Spreadox/refs/heads/main/docs/images/spreadox-report-studio.png)](https://spreadox-report-mvc.vercel.app/)
 
 > 🌐 **Try it live on Vercel:** [https://spreadox-report-mvc.vercel.app/](https://spreadox-report-mvc.vercel.app/)
 
@@ -38,15 +38,15 @@ Vector charts rendered crisply at any zoom level, with running headers, logos, s
 
 | MVC Studio Cover Page | Radar Chart & Header (from MVC Studio) |
 |:---:|:---:|
-| ![PDF Cover](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/mvc-pdf-cover.png) | ![PDF Radar Chart](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/mvc-pdf-chart-radar.png) |
+| ![PDF Cover](https://raw.githubusercontent.com/FatihBaycu/Spreadox/refs/heads/main/docs/images/mvc-pdf-cover.png) | ![PDF Radar Chart](https://raw.githubusercontent.com/FatihBaycu/Spreadox/refs/heads/main/docs/images/mvc-pdf-chart-radar.png) |
 
 | Station Measurements (Line + UCL/LCL) | Pareto Combo (Bar + Secondary Line) |
 |:---:|:---:|
-| ![PDF Line Chart](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/pdf-sample-chart-line.png) | ![PDF Pareto Chart](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/pdf-sample-chart-pareto.png) |
+| ![PDF Line Chart](https://raw.githubusercontent.com/FatihBaycu/Spreadox/refs/heads/main/docs/images/pdf-sample-chart-line.png) | ![PDF Pareto Chart](https://raw.githubusercontent.com/FatihBaycu/Spreadox/refs/heads/main/docs/images/pdf-sample-chart-pareto.png) |
 
 | Bounce Rate (Pie Chart & Summary) | Bar Chart (with Summary Metrics) |
 |:---:|:---:|
-| ![PDF Pie Chart](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/mvc-pdf-chart-pie.png) | ![PDF Bar Chart](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/mvc-pdf-chart-bar.png) |
+| ![PDF Pie Chart](https://raw.githubusercontent.com/FatihBaycu/Spreadox/refs/heads/main/docs/images/mvc-pdf-chart-pie.png) | ![PDF Bar Chart](https://raw.githubusercontent.com/FatihBaycu/Spreadox/refs/heads/main/docs/images/mvc-pdf-chart-bar.png) |
 
 ### Native Excel Spreadsheets (ExcelWorkbook)
 
@@ -54,7 +54,7 @@ Standard OOXML DrawingML charts linked to spreadsheet cell ranges with native fo
 
 | Excel Spreadsheet with Combo Chart and Summary Grid |
 |:---:|
-| ![Excel Report Sample](https://raw.githubusercontent.com/FatihBaycu/Conq.Noble.Spreadox/refs/heads/main/docs/images/excel-sample-report.png) |
+| ![Excel Report Sample](https://raw.githubusercontent.com/FatihBaycu/Spreadox/refs/heads/main/docs/images/excel-sample-report.png) |
 
 ---
 
@@ -269,4 +269,4 @@ Tagging a release as `v0.9.0` triggers the automated CI/CD publishing workflow w
 
 ## License
 
-MIT — see [LICENSE](https://github.com/FatihBaycu/Conq.Noble.Spreadox/blob/main/LICENSE). Depends on DocumentFormat.OpenXml (MIT) and PdfSharpCore (MIT). Embedded Liberation Sans fonts are SIL Open Font License.
+MIT — see [LICENSE](https://github.com/FatihBaycu/Spreadox/blob/main/LICENSE). Depends on DocumentFormat.OpenXml (MIT) and PdfSharpCore (MIT). Embedded Liberation Sans fonts are SIL Open Font License.

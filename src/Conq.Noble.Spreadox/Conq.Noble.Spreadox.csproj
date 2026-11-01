@@ -15,7 +15,7 @@
     <Description>Spreadox is a high-level C# library for Excel (.xlsx) workbooks and A4 PDF chart reports. OpenXml types stay internal. PDF uses in-memory series (not OOXML charts).</Description>
     <PackageTags>spreadox;spreadsheet;xlsx;excel;openxml;chart;streaming;ooxml;pdf</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>https://github.com/FatihBaycu/Conq.Noble.Spreadox/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/FatihBaycu/Spreadox/releases</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

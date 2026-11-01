@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Conq.Noble.Spreadox\Conq.Noble.Spreadox.csproj" />
+    <PackageReference Include="Conq.Noble.Spreadox" Version="0.9.1" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.2] - 2026-11-01
+
+### Added
+- **Advanced Resilience & Robustness Suite (185 Tests Total, +29 Tests):**
+  - **Excel Differential Testing:** Verified consistent semantics across Spreadox DOM, SAX Streaming, and Microsoft OpenXML SDK DOM engines with round-trip mutation safety (`ExcelDifferentialTestingTests`).
+  - **Crash & Interruption Recovery:** Verified that incomplete or prematurely aborted stream exports are strictly rejected upon reopen, and unmanaged file locks are immediately released (`CrashRecoveryTests`).
+  - **Memory Pressure & GC Stability:** Validated sustained exports under 128 MB artificial memory pressure (`GC.AddMemoryPressure`) with bounded heap growth (`MemoryPressureTests`).
+  - **Concurrent Stress Testing:** 100 concurrent worker tasks generating 200 documents simultaneously in ~2.8s (avg 28 ms, p95 = 52 ms) with 100% data isolation and 0 OS handle leaks (`ConcurrentStressTests`).
+  - **Formula Injection (DDE) Hardening:** 14 attack payloads (`=cmd`, `+`, `-`, `@`, leading whitespace/tabs) confirmed stored strictly as pure text, preventing spreadsheet code execution while preserving functional formulas (`FormulaInjectionRegressionTests`).
+  - **ZIP & XML Security:** Validated protection against ZipSlip directory traversal, excessive ZIP entries, XXE injection (DTD disabled), and malformed XML (`ZipAndXmlSecurityTests`).
+  - **PDF Font Cache Concurrency:** Validated thread-safe initialization and byte immutability across 100 concurrent PDF generations, eliminating ~250 MB of LOH memory bloat (`PdfFontCacheConcurrencyTests`).
+  - **Reproducible Build Verification:** Deterministic build flags (`<Deterministic>true</Deterministic>`), SourceLink integration, and snupkg symbols verified (`ReproducibleBuildTests`).
+- **Audit & Benchmark Documentation:**
+  - Updated [docs/TEST_RESULTS.md](docs/TEST_RESULTS.md) with complete 185-test execution, memory profile, and benchmark matrix.
+
+### Changed
+- **Repository Rename:** Updated all repository, release notes, and documentation links to `https://github.com/FatihBaycu/Spreadox`.
+- **MVC Sample Decoupling:** `ReportBuilderMvc` now consumes `Conq.Noble.Spreadox` directly as a NuGet package (`PackageReference`) rather than an in-solution project reference.
+- **Docker Build Optimization:** Simplified `Dockerfile` layer caching for MVC app by removing redundant source project copy.
+
+### Fixed
+- **Invalid Package Ingestion Hardening (DEF-007):** `OpenXmlWorkbookReader` now validates package structure and throws `InvalidDataException` when reading non-Excel or empty ZIP packages without a valid `WorkbookPart` or `Sheets`.
+
+---
+
 ## [0.9.1] - 2026-10-31
 
 ### Added
@@ -30,14 +55,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added release, versioning, and commit workflow rules to `.gemini/rules/` and `.cursor/rules/`.
 
 ### Fixed
-- **XML 1.0 Control Character Sanitization:** Implemented `SanitizeXmlString` in `OpenXmlWorkbookWriter` and `StreamingPackageWriter` to strip illegal control characters (`\0`..`\x1F` except `\t`, `\r`, `\n`), preventing serialization crashes.
-- **Coordinate Boundary Validation:** Enforced maximum 1,048,576 rows and 16,384 columns in `CellAddress.Parse`.
-- **Worksheet Name Hardening:** Enforced Excel forbidden character checks (`\ / ? * [ ] :`), leading/trailing apostrophes (`'`), and duplicate sheet names in `StreamingPackageWriter` and `ExcelWorksheet`.
-- **Cell Nullability & Cross-Conversion:** Fixed nullable warning CS8602 in `ExcelCell` and enabled cross-conversion between integer, double, and decimal representations.
+- **XML 1.0 Control Character Sanitization (DEF-005):** Implemented `SanitizeXmlString` in `OpenXmlWorkbookWriter` and `StreamingPackageWriter` to strip illegal control characters (`\0`..`\x1F` except `\t`, `\r`, `\n`), preventing serialization crashes.
+- **Coordinate Boundary Validation (DEF-001):** Enforced maximum 1,048,576 rows and 16,384 columns in `CellAddress.Parse`.
+- **Worksheet Name Hardening (DEF-002):** Enforced Excel forbidden character checks (`\ / ? * [ ] :`), leading/trailing apostrophes (`'`), and duplicate sheet names in `StreamingPackageWriter` and `ExcelWorksheet`.
+- **Cell Nullability & Cross-Conversion (DEF-003):** Fixed nullable warning CS8602 in `ExcelCell` and enabled cross-conversion between integer, double, and decimal representations.
 
 ### Performance
-- **Streaming Row Writer Allocation Reduction:** Reused `ExcelStreamingRowWriter` instance per worksheet, eliminating 1,000,000 Gen0 allocations during 1M-row exports.
-- **TrueType Font LOH Caching:** Added `ConcurrentDictionary<string, byte[]>` cache in `PdfFontResolver`, eliminating ~2.5 MB Large Object Heap (LOH) allocations per PDF generation.
+- **Streaming Row Writer Allocation Reduction (DEF-004):** Reused `ExcelStreamingRowWriter` instance per worksheet, eliminating 1,000,000 Gen0 allocations during 1M-row exports.
+- **TrueType Font LOH Caching (DEF-006):** Added `ConcurrentDictionary<string, byte[]>` cache in `PdfFontResolver`, eliminating ~2.5 MB Large Object Heap (LOH) allocations per PDF generation.
 
 ---
 

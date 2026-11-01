@@ -110,5 +110,5 @@ git push origin vX.Y.Z
 ```
 
 ### Step 5: Verify Deployment
-- Monitor GitHub Actions: `https://github.com/FatihBaycu/Conq.Noble.Spreadox/actions`
+- Monitor GitHub Actions: `https://github.com/FatihBaycu/Spreadox/actions`
 - Verify NuGet.org package: `https://www.nuget.org/packages/Conq.Noble.Spreadox/X.Y.Z`
